@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assistant VMC Double Flux</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    h2 {
+      color: #004B87;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .tabs button {
+      padding: 8px 12px;
+      border: 1px solid #004B87;
+      border-radius: 5px;
+      background-color: #E3F2FD;
+      color: #004B87;
+      cursor: pointer;
+    }
+    .tabs button.active {
+      background-color: #004B87;
+      color: white;
+    }
+    .question-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .question-buttons button {
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.85em;
+      cursor: pointer;
+      border: 1px solid;
+    }
+    .input-box {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .ask-button {
+      padding: 8px 12px;
+      background-color: #004B87;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .response-box {
+      margin-top: 20px;
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .button-blue {
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border: 1px solid #004B87;
+      border-radius: 4px;
+      color: #004B87;
+      background-color: #E3F2FD;
+      cursor: pointer;
+    }
+    .button-white {
+      padding: 5px 10px;
+      background-color: #FFF;
+      border: 1px solid #004B87;
+      border-radius: 4px;
+      color: #004B87;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Assistant Ventilation Double Flux</h2>
+  <div class="tabs" id="tab-container"></div>
+  <div class="question-buttons" id="question-buttons"></div>
+  <input type="text" id="questionInput" class="input-box" placeholder="Pose ta question..." />
+  <button class="ask-button" onclick="handleAsk()">Poser la question</button>
+  <div id="response" class="response-box"></div>
+
+  <script>
+    const tabs = ["VMC Double Flux", "Questions Générales", "Segment Client"];
+    const vmcQuestions = [
+      { label: "💨 VMC Double Flux", value: "vmc double flux" },
+      { label: "🎥 Vidéo Duco", value: "vidéo duco" },
+      { label: "📘 Manuel d'installation", value: "manuel duco" },
+      { label: "📄 Fiche technique DucoBox", value: "fiche technique" },
+      { label: "🧩 Accessoires compatibles", value: "accessoires" },
+      { label: "📑 Brochure commerciale", value: "brochure" },
+    ];
+    const generalQuestions = [
+      { label: "💰 Comment réduire les coûts ?", value: "réduction coûts" },
+      { label: "🛠️ Comment installer une ventilation ?", value: "installer ventilation" },
+      { label: "🔧 Cas Maintenance", value: "cas maintenance" },
+    ];
+    const clientSegments = [
+      { label: "🏢 Cas Promoteur", value: "cas promoteur" },
+      { label: "📐 Cas Bureau d'études", value: "cas bureau d'études" },
+      { label: "🛠️ Cas Installateur", value: "cas installateur" },
+      { label: "🏠 Cas Client Final", value: "cas client final" },
+    ];
+
+    let activeTab = "VMC Double Flux";
+    let responseState = "";
+
+    const predefinedResponses = {
+      "vmc double flux": `
+        <button class='button-blue' onclick="handleAsk('neuf')">🏠 Application "NEUF"</button><br>
+        <button class='button-blue' onclick="handleAsk('rénovation')">🛠️ Application "RÉNOVATION"</button><br>
+        <button class='button-blue' onclick="handleAsk('comparatif')">📊 Comparatif D325 vs D325FR (NF)</button>
+      `,
+      "neuf": `
+        <button class='button-white' onclick="handleAsk('vmc double flux')">⬅️ Revenir</button>
+        <p><strong>Application résidentielle en neuf (DucoBox Energy Comfort D325FR certifiée NF)</strong></p>
+        <p>🏘️ Solution idéale certifiée NF pour projets neufs du T2 au T5+</p>
+        <p>🔁 Échangeur haute performance 94% + ventilateurs silencieux</p>
+        <p>🌬️ Filtration rigoureuse = qualité d'air optimale</p>
+        <p>⚖️ Compacte, légère (21kg), installable seul</p>
+        <p>↔️ Interchangeable gauche/droite sans outils</p>
+        <p>📲 Logiciel intégré : paramétrage automatique selon type de logement</p>
+        <p>🧰 Maintenance facilitée (accès frontal)</p>
+        <p>🔗 Système complet avec : VMC + bouches + conduits + régulation</p>
+        <p>🔇 Conduits DucoFlex classe D – Zéro Bruit</p>
+        <p>📱 Application DUCO : calibration & suivi à distance</p>
+        <p>🧠 Gestion intelligente des débits (base/pointe)</p>
+      `,
+      "rénovation": `
+        <button class='button-white' onclick="handleAsk('vmc double flux')">⬅️ Revenir</button>
+        <p><strong>Application résidentielle en rénovation (DucoBox Energy Comfort D325)</strong></p>
+        <p>🏚️ Débit ajustable jusqu’à 325 m³/h pour projets rénovation</p>
+        <p>❄️ Free-cooling été / chaleur hiver – classe A+ (2 capteurs)</p>
+        <p>🧪 Ventilation à la demande : détection CO₂ et hygrométrie</p>
+        <p>🌬️ Filtration rigoureuse = qualité d'air optimale</p>
+        <p>⚖️ Léger (21 kg) – Installation facile par 1 personne</p>
+        <p>↔️ Interchangeable gauche/droite sans démontage</p>
+        <p>🔄 Équilibrage automatique par pression constante</p>
+        <p>📦 Fonction copie pour lotissements</p>
+        <p>🧰 Accès frontal pour la maintenance</p>
+        <p>🔗 Système complet : VMC + bouches + conduits + régulation</p>
+        <p>🔇 DucoFlex silencieux – Classe D</p>
+        <p>📱 Application DUCO : calibration et suivi</p>
+        <p>🧠 Gestion intelligente de la QAI et des débits</p>
+      `,
+      "comparatif": `
+        <button class='button-white' onclick="handleAsk('vmc double flux')">⬅️ Revenir</button>
+        <p><strong>📊 Comparatif DucoBox D325 vs DucoBox D325FR (certifiée NF)</strong></p>
+        <p>Voir tableau dans la documentation technique pour détails complets.</p>
+      `
+    };
+
+    function renderTabs() {
+      const tabContainer = document.getElementById("tab-container");
+      tabContainer.innerHTML = "";
+      tabs.forEach(tab => {
+        const btn = document.createElement("button");
+        btn.textContent = tab;
+        btn.className = (tab === activeTab) ? "active" : "";
+        btn.onclick = () => {
+          activeTab = tab;
+          renderTabs();
+          renderQuestions();
+          document.getElementById("response").innerHTML = "";
+        };
+        tabContainer.appendChild(btn);
+      });
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById("question-buttons");
+      container.innerHTML = "";
+      const list = activeTab === "VMC Double Flux" ? vmcQuestions :
+                   activeTab === "Questions Générales" ? generalQuestions : clientSegments;
+      list.forEach((q, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = q.label;
+        btn.style.backgroundColor = activeTab === "VMC Double Flux" ? "#E8F5E9" :
+                                    activeTab === "Questions Générales" ? "#F3E5F5" : "#FFF3E0";
+        btn.style.borderColor = activeTab === "VMC Double Flux" ? "#43A047" :
+                                activeTab === "Questions Générales" ? "#6A1B9A" : "#E65100";
+        btn.style.color = activeTab === "VMC Double Flux" ? "#2E7D32" :
+                          activeTab === "Questions Générales" ? "#6A1B9A" : "#E65100";
+        btn.onclick = () => handleAsk(q.value);
+        container.appendChild(btn);
+      });
+    }
+
+    function handleAsk(q = null) {
+      const input = q || document.getElementById("questionInput").value.trim().toLowerCase();
+      const res = predefinedResponses[input.toLowerCase()] || "❓ Question inconnue. Reformule ta demande.";
+      document.getElementById("response").innerHTML = res;
+    }
+
+    renderTabs();
+    renderQuestions();
+  </script>
+</body>
+</html>
