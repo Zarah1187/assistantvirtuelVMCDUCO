@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assistant Ventilation Double Flux</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    h2 {
+      color: #004B87;
+    }
+    .tabs button {
+      background-color: #E3F2FD;
+      color: #004B87;
+      border: 1px solid #004B87;
+      border-radius: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .tabs button.active {
+      background-color: #004B87;
+      color: white;
+    }
+    .question-buttons button {
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.85em;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .input-box {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .ask-button {
+      padding: 8px 12px;
+      background-color: #004B87;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .response-box {
+      margin-top: 20px;
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Assistant Ventilation Double Flux</h2>
+  <div class="tabs">
+    <button class="active">VMC Double Flux</button>
+    <button>Questions Générales</button>
+    <button>Segment Client</button>
+  </div>
+
+  <div class="question-buttons">
+    <button style="background:#E8F5E9;border:1px solid #43A047;color:#2E7D32">💨 VMC Double Flux</button>
+    <button style="background:#E8F5E9;border:1px solid #43A047;color:#2E7D32">🎥 Vidéo Duco</button>
+    <button style="background:#E8F5E9;border:1px solid #43A047;color:#2E7D32">📘 Manuel d'installation</button>
+    <button style="background:#E8F5E9;border:1px solid #43A047;color:#2E7D32">📄 Fiche technique DucoBox</button>
+    <button style="background:#E8F5E9;border:1px solid #43A047;color:#2E7D32">🧩 Accessoires compatibles</button>
+    <button style="background:#E8F5E9;border:1px solid #43A047;color:#2E7D32">📑 Brochure commerciale</button>
+  </div>
+
+  <input type="text" class="input-box" placeholder="Pose ta question..." />
+  <button class="ask-button">Poser la question</button>
+
+  <div class="response-box">
+    <!-- La réponse apparaîtra ici -->
+    <p>Exemple de réponse affichée ici...</p>
+  </div>
+</body>
+</html>
